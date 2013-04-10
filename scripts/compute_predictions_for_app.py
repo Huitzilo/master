@@ -35,10 +35,12 @@ import pybel
 import copy
 reload(rl)
 
-mol_file = '/Users/dedan/projects/master/data/molecules.sdf'
 outpath = '/Users/dedan/projects/odor_app/models'
 data_path = os.path.join(os.path.dirname(__file__), '..', 'data')
+mol_file = '/Users/dedan/projects/master/data/molecules.sdf'
+molid2smile = json.load(open(os.path.join(data_path, 'molid2smile.json')))
 gloms = json.load(open(os.path.join(data_path, 'all_glomeruli.json')))
+print mol_file
 molecules = pybel.readfile('sdf', mol_file)
 id2desc = {}
 for m in molecules:
@@ -129,7 +131,8 @@ for glom in gloms:
             tmp = copy.deepcopy(id2desc[m])
             tmp.update({
                 'prediction': round(float(p), 3),
-                'molid': m
+                'molid': m,
+                'smile': molid2smile[m] if m in molid2smile else ''
             })
 
             if m in data['molids']:
