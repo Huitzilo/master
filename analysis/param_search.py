@@ -11,6 +11,9 @@ An example config file is given in the config folder as param_search_base.json
 * to combine all conventional features into one huge descriptor add 'all' to list
     {"descriptors": ["all", "ATOMCENTRED_FRAGMENTS", "BLA_SUPER_DESCRIPTOR"]}
 
+The results produced by this script can be analyzed using
+
+    `analysis/plot/plot_paramsearch.py`
 
 Created by  on 2012-01-27.
 Copyright (c) 2012. All rights reserved.

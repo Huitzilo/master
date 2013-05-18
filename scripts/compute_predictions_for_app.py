@@ -39,6 +39,7 @@ outpath = '/Users/dedan/projects/odor_app/models'
 data_path = os.path.join(os.path.dirname(__file__), '..', 'data')
 mol_file = '/Users/dedan/projects/master/data/molecules.sdf'
 molid2smile = json.load(open(os.path.join(data_path, 'molid2smile.json')))
+door2id = json.load(open(os.path.join(data_path, 'door2id.json')))
 gloms = json.load(open(os.path.join(data_path, 'all_glomeruli.json')))
 print mol_file
 molecules = pybel.readfile('sdf', mol_file)
@@ -93,8 +94,12 @@ for k, config in feat_config.items():
     cache[k] = {"features": rl.prepare_features(base_config)}
 all_mols = [r['features'].keys() for r in cache.values()]
 mol_intersection = set(all_mols[0]).intersection(*all_mols[1:])
+doorids = [v[0] for v in door2id.values() if v]
 for k in cache:
     cache[k]['features'] = {m: cache[k]['features'][m] for m in mol_intersection}
+    training_data = {molid2smile[m]: cache[k]['features'][m].tolist()
+                     for m in mol_intersection if m in molid2smile and m in doorids}
+    json.dump(training_data, open(os.path.join(outpath, k + '_training_data.json'), 'w'))
 
 res = {n: {g: {} for g in gloms} for n in feat_config}
 for glom in gloms:
