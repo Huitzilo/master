@@ -20,7 +20,7 @@ def index():
 @app.route('/<receptor>/<method>')
 def receptor_overview(receptor, method):
     """return all predictions for one receptor method combination"""
-    print receptor, method
+#    print receptor, method
     predictions = data[method][receptor]['predictions']
     sorted_predictions = sorted(predictions, key=lambda x: x['prediction'], reverse=True)
     return jsonify(predictions=sorted_predictions,
